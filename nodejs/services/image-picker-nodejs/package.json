@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start-local": "tsc && node src/index.js",
+    "start-local": "tsc && OTEL_EXPORTER_OTLP_ENDPOINT=https://api.honeycomb.io OTEL_EXPORTER_OTLP_HEADERS=x-honeycomb-team=${HONEYCOMB_API_KEY} OTEL_SERVICE_NAME=image-picker node src/index.js",
     "start": "node src/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@opentelemetry/auto-instrumentations-node": "^0.49.2",
+    "@opentelemetry/exporter-trace-otlp-proto": "^0.53.0",
+    "@opentelemetry/sdk-node": "^0.53.0",
     "express": "^4.18.3"
   },
   "devDependencies": {

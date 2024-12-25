@@ -1,4 +1,6 @@
+import "./tracing"
 import express, { Request, Response } from 'express';
+import { trace, context } from '@opentelemetry/api';
 
 const PHRASES = [
     "you're muted",
@@ -34,11 +36,13 @@ app.get("/health", (req: Request, res: Response) => {
 
 app.get('/phrase', async (req, res) => {
     const phrase = choose(PHRASES);
+    // trace.getActiveSpan()?.setAttributes({ "app.phrase": phrase });
     res.send({ phrase });
 });
 
 function choose<T>(array: T[]): T {
     const i = Math.floor(Math.random() * array.length);
+    // trace.getActiveSpan()?.setAttributes({ "app.choiceIndex": i, "app.numberOfChoices": array.length }); // INSTRUMENTATION: add relevant info
     return array[i];
 }
 

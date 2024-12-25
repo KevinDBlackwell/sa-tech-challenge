@@ -13,6 +13,10 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
+# Set environment variable during build
+ARG HONEYCOMB_API_KEY=value
+ENV HONEYCOMB_API_KEY=$HONEYCOMB_API_KEY
+
 # Build the application
 RUN npm run build
 

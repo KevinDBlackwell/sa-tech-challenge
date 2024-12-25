@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { trace } from '@opentelemetry/api';
 import crypto from 'crypto';
 import path from 'path';
 
@@ -12,6 +13,7 @@ const DEFAULT_IMAGE_PATH = '../tmp/BusinessWitch.png';
  * @returns 
  */
 export async function download(inputImageUrl: string): Promise<string> {
+    // const span = trace.getActiveSpan();
     if (!inputImageUrl) {
        throw new Error('No input image URL provided');
     }
@@ -37,9 +39,19 @@ export async function download(inputImageUrl: string): Promise<string> {
             }
         })
         .catch((err: Error) => {
-            throw new Error(`Error while fetching image: ${err.message}`);
+            // span?.recordException(err); // INSTRUMENTATION: record error conditions
+            // span?.setAttributes({
+            //     "warn.message": "Image failed to download: " + err.message,
+            //     "app.inputImageUrl": inputImageUrl,
+            //     "app.default.imagePath": DEFAULT_IMAGE_PATH,
+            // });
+            return path.join(__dirname, DEFAULT_IMAGE_PATH);
         });
 
+    // span?.setAttributes({
+    //     "app.download.inputImageUrl": inputImageUrl,
+    //     "app.download.downloadDestinationPath": downloadDestinationPath,
+    // });
     return downloadDestinationPath;
 }
 

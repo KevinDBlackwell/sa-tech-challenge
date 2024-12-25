@@ -13,7 +13,6 @@ RUN npm install
 COPY tsconfig.json .
 # Copy the rest of the application code to the working directory
 COPY ./src ./src
-COPY images.json .
 
 RUN npx tsc 
 
